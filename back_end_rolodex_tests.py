@@ -93,6 +93,7 @@ class TestRolodexFunctions(unittest.TestCase):
         """Fixture that deletes the files used by the test methods"""
         try:
             os.remove(self.test_data)
+            os.remove('json.out')
         except:
             pass
 
@@ -150,7 +151,7 @@ class TestRolodexFunctions(unittest.TestCase):
     def test_generate_output(self):
         """Converts final address dictionary to JSON and writes it to a file"""
         generate_output(self.test_data)
-        generated_file = self.test_helper()
+        generated_file = self.read_generated_file()
 
         self.assertTrue(os.path.exists('json.out'))
         self.assertEqual(generated_file.strip(), self.json_output.strip())
@@ -159,17 +160,18 @@ class TestRolodexFunctions(unittest.TestCase):
     def test_rolodex(self):
         """Just calls generate_output() and should produce the same result"""
         rolodex(self.test_data)
-        generated_file = self.test_helper()
+        generated_file = self.read_generated_file()
 
         self.assertTrue(os.path.exists('json.out'))
         self.assertEqual(generated_file.strip(), self.json_output.strip())
         
 
-    def test_helper(self):
+    def read_generated_file(self):
         f = open('json.out', mode='r', encoding='utf-8')
         generated_file = f.read()
         f.close()
         return generated_file
+
 
 if __name__ == '__main__':
     unittest.main()
