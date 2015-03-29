@@ -17,6 +17,7 @@ class TestRolodexFunctions(unittest.TestCase):
                     'Ria Tillotson, aqua marine, 97671, 196 910 5548\n'
                     'Liptak, Quinton, (653)-889-7235, yellow, 70703\n'
                     '0.547777482345\n') 
+            f.close()
 
         self.sorted_data = [['Noah, Moench, 123123121, 232 695 2394, yellow',
                              'Ria Tillotson, aqua marine, 97671, 196 910 5548',
@@ -51,14 +52,21 @@ class TestRolodexFunctions(unittest.TestCase):
                           }
 
         self.final_dict = {"entries": [
+                                        self.paren_dict,
                                         self.spaces_dict, 
                                         self.full_name_dict, 
-                                        self.paren_dict
                                       ], 
                                       "errors": self.sorted_data[1]}
 
         self.json_output = """{
   "entries": [
+    {
+      "color": "yellow",
+      "firstname": "Quinton",
+      "lastname": "Liptak",
+      "phonenumber": "653-889-7235",
+      "zipcode": "70703"
+    },
     {
       "color": "yellow",
       "firstname": "Noah",
@@ -72,13 +80,6 @@ class TestRolodexFunctions(unittest.TestCase):
       "lastname": "Tillotson",
       "phonenumber": "196-910-5548",
       "zipcode": "97671"
-    },
-    {
-      "color": "yellow",
-      "firstname": "Quinton",
-      "lastname": "Liptak",
-      "phonenumber": "653-889-7235",
-      "zipcode": "70703"
     }
   ],
   "errors": [
@@ -135,7 +136,7 @@ class TestRolodexFunctions(unittest.TestCase):
 
     def test_build_rolodex(self):
         """Builds the final sorted rolodex dictionary"""
-        self.assertEqual(build_rolodex(self.test_data), self.final_dict)
+        self.assertEqual(dict(build_rolodex(self.test_data)), self.final_dict)
 
     
     def test_phone_number_formatter(self):
@@ -149,7 +150,7 @@ class TestRolodexFunctions(unittest.TestCase):
     def test_generate_output(self):
         """Converts final address dictionary to JSON and writes it to a file"""
         generate_output(self.test_data)
-        generated_file = open('json.out', mode='r', encoding='utf-8').read()
+        generated_file = self.test_helper()
 
         self.assertTrue(os.path.exists('json.out'))
         self.assertEqual(generated_file.strip(), self.json_output.strip())
@@ -158,11 +159,17 @@ class TestRolodexFunctions(unittest.TestCase):
     def test_rolodex(self):
         """Just calls generate_output() and should produce the same result"""
         rolodex(self.test_data)
-        generated_file = open('json.out', mode='r', encoding='utf-8').read()
+        generated_file = self.test_helper()
 
         self.assertTrue(os.path.exists('json.out'))
         self.assertEqual(generated_file.strip(), self.json_output.strip())
+        
 
+    def test_helper(self):
+        f = open('json.out', mode='r', encoding='utf-8')
+        generated_file = f.read()
+        f.close()
+        return generated_file
 
 if __name__ == '__main__':
     unittest.main()
