@@ -5,7 +5,7 @@ from raw data.
 
 ####Formats
 
-Rolodex currently accepts three formats of address input:
+Rolodex currently supports three formats of address input:
 
 * Lastname, Firstname, (703)-742-0996, Blue, 10013 
 * Firstname Lastname, Red, 11237, 703 955 0373 
@@ -15,10 +15,13 @@ Rolodex currently accepts three formats of address input:
 
 ######From Bash:
 
-Create a file with of addresses, One address per line, formatted in any of the 
-supported formats. Then, simply cd into the rolodex directory and type 
+Create a file of addresses putting one address per line. Addresses can be formatted 
+in any of the supported formats. Then, simply cd into the rolodex directory and type 
 `$ python3 back_end_rolodex.py data.in`, or whatever your input file is called. 
-Your json.out file will automatically be created for you. 
+Your json.out file will automatically be created for you in the current directory.
+
+Optionally, you can also build this program by running `chmod +x back_end_rolodex.py`
+then simply run your program like this `$ ./back_end_rolodex.py data.in` 
 
 From REPL
 
