@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Accepts a file of addresses and returns a formatted JSON output.
     
 Usage:
@@ -7,6 +8,7 @@ Usage:
 
 import re
 import json
+import sys
 from collections import OrderedDict
 
 def filter_addresses(address_file):
@@ -38,10 +40,13 @@ def pick_format(address):
     spaces_re = re.compile('\d{3}\ {1}\d{3}\ {1}\d{4}')
     data = address.split(', ')
     
+    # format has full name
     if len(data) == 4:
         return address_with_full_name(data)
+    # format has spaces for phone number
     elif re.search(spaces_re, address):
         return address_with_spaces(data)
+    # format has parentheses in phone number
     else:
         return address_with_parens(data)
 
@@ -90,12 +95,13 @@ def generate_output(address_file):
     f = open('json.out', 'w+')
     sorted_rolodex = OrderedDict(sorted(build_rolodex(address_file).items()))
     f.write(json.dumps(sorted_rolodex, indent=2))
+    print("Your file has been created!")
 
 
-def main():
-    generate_output('./data.in')
+def rolodex(address_file):
+    generate_output(address_file)
 
 
 if __name__ == '__main__':
-    main()
+    rolodex(sys.argv[1])
     
