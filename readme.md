@@ -1,7 +1,12 @@
 # Welcome to Rolodex
 
 Rolodex generates a formatted and organized JSON rolodex or address book
-from raw data. 
+from raw address data. 
+
+Rolodex conviently comes with example data (`data.in`) and file of the expected
+output: (`json.out`).
+
+Quickstart: `$ python3 back_end_rolodex.py data.in`
 
 ####Formats
 
@@ -28,3 +33,8 @@ From REPL
 Import the `rolodex` function from this file: `from back_end_rolodex import rolodex` 
 then simply call the `rolodex` function with your data file, like this: 
 `rolodex('./data.in')`
+
+####Testing Rolodex
+
+Rolodex is fully tested. To run the tests, run `$ python3 back_end_rolodex_tests.py`
+from the terminal.

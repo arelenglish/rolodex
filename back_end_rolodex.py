@@ -18,12 +18,13 @@ def filter_addresses(address_file):
     errors = []
     phone_num_re = re.compile('(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}')
     
-    with open(address_file, 'r') as f:
+    with open(address_file, mode='r', encoding='utf-8') as f:
         for idx, line in enumerate(f):
             if re.search(phone_num_re, line):
                 addresses.append(line.strip())
             else:
                 errors.append(idx)
+    f.close()
     return [addresses, errors]
 
 
@@ -35,7 +36,8 @@ def build_rolodex(address_file):
         address_object = pick_format(address)
         sorted_address_object = OrderedDict(sorted(address_object.items()))
         organized_addresses["entries"].append(sorted_address_object)
-    return organized_addresses
+        sorted_addresses = OrderedDict(sorted(organized_addresses.items()))
+    return sorted_addresses
 
 
 def pick_format(address):
@@ -94,9 +96,9 @@ def phone_number_formatter(phone_number):
 
 
 def generate_output(address_file):
-    f = open('json.out', 'w+')
-    sorted_rolodex = OrderedDict(sorted(build_rolodex(address_file).items()))
-    f.write(json.dumps(sorted_rolodex, indent=2))
+    f = open('json.out', mode='w+', encoding='utf-8')
+    f.write(json.dumps(build_rolodex(address_file), indent=2))
+    f.close()
     print("Your file has been created!")
 
 
